@@ -13,6 +13,7 @@ public class Period {
         if (start < 0 || start > 24 || end < 0 || end > 24) {
             throw new IllegalArgumentException("start of period and end of period must be between 0 and 24");
         }
+
         this.startHour = start;
         this.endHour = end;
     }
