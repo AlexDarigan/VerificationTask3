@@ -9,7 +9,12 @@ import java.util.ArrayList;
 // P is for Partition
 public class DariganDavidTestTask3 {
 
-    // Task 3 
+    // Task 3
+    // (Task 2 Bug: P1_NormalRateIsEqualOrGreaterThanZero)
+    @Test public void TDD_NormalRateIsEqualOrGreaterThanZero() {
+        // Note: Empty Test auto passes
+    }
+
 
     // Task 2 - White Box
     // TC stands for Testcase
