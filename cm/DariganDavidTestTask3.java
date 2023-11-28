@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 // P is for Partition
-public class DariganDavidTestTask2 {
+public class DariganDavidTestTask3 {
 
     // Task 3 
 
@@ -100,10 +100,6 @@ public class DariganDavidTestTask2 {
         Assertions.assertThrows(IllegalArgumentException.class, () -> new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods));
 
     }
-//    i <periods1.size() && isValid
-
-
-
 
     // Task 1 - Black Box
     @Test

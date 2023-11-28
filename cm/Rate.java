@@ -11,8 +11,6 @@ public class Rate {
     private ArrayList<Period> reduced = new ArrayList<>();
     private ArrayList<Period> normal = new ArrayList<>();
 
-    Variable 'reduced' initializer 'new ArrayList<>()' is redundant;
-    Variable 'normal' initializer 'new ArrayList<>()' is redundant;
     public Rate(CarParkKind kind, BigDecimal normalRate, BigDecimal reducedRate, ArrayList<Period> normalPeriods, ArrayList<Period> reducedPeriods) {
         if (reducedPeriods == null || normalPeriods == null) {
             throw new IllegalArgumentException("periods cannot be null");
