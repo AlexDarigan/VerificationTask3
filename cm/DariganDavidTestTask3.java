@@ -12,7 +12,12 @@ public class DariganDavidTestTask3 {
     // Task 3
     // (Task 2 Bug: P1_NormalRateIsEqualOrGreaterThanZero)
     @Test public void TDD_NormalRateIsEqualOrGreaterThanZero() {
-        // Note: Empty Test auto passes
+        CarParkKind kind = CarParkKind.STAFF;
+        BigDecimal normalRate = BigDecimal.ZERO;
+        BigDecimal reducedRate = BigDecimal.ZERO;
+
+        Rate rate = new Rate(kind, normalRate, reducedRate, new ArrayList<>(), new ArrayList<>());
+        Assertions.assertInstanceOf(Rate.class, rate);
     }
 
 
