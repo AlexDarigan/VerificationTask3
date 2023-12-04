@@ -1,6 +1,7 @@
 package cm;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,6 +91,13 @@ public class Rate {
         int normalRateHours = periodStay.occurences(normal);
         int reducedRateHours = periodStay.occurences(reduced);
         if (this.kind==CarParkKind.VISITOR) return BigDecimal.valueOf(0);
+        else if(this.kind == CarParkKind.STUDENT) {
+            BigDecimal rate = (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).add(
+                    this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
+            if(rate.compareTo(new BigDecimal("5.50")) > 0) {
+                return rate = BigDecimal.valueOf(rate.intValue() * .33).setScale(2, RoundingMode.HALF_UP);
+            }
+        }
         return (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).add(
                 this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
     }
