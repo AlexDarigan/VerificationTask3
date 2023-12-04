@@ -11,7 +11,23 @@ import java.util.ArrayList;
 public class DariganDavidTestTask3 {
 
     final int EQUAL_BIG_DECIMALS = 0;
+//else {
+//        throw new IllegalArgumentException("Kind must be one of Student, Visitor, Staff or Managment");
+//    }
+    @Test
+    public void InvalidKindThrows() {
+        BigDecimal normalRate = new BigDecimal(2);
+        BigDecimal reducedRate = new BigDecimal(1);
+        ArrayList<Period> normalPeriods = new ArrayList<>();
+        ArrayList<Period> reducedPeriods = new ArrayList<>();
+        normalPeriods.add(new Period(3, 6));
+        normalPeriods.add(new Period(7, 10));
+        reducedPeriods.add(new Period(0, 3));
+        Period periodStay = new Period(0, 6);
 
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Rate(null, normalRate, reducedRate, normalPeriods, reducedPeriods));
+    }
     @Test
     public void StudentReductionAppliesOverMixedPeriods() {
         CarParkKind kind = CarParkKind.STUDENT;
