@@ -14,6 +14,20 @@ public class DariganDavidTestTask3 {
 
     // Task 3
     @Test
+    public void StaffPayNoMoreThan10PerDay() {
+        CarParkKind kind = CarParkKind.STAFF;
+        BigDecimal normalRate = new BigDecimal(5);
+        BigDecimal reducedRate = new BigDecimal(4);
+        ArrayList<Period> normalPeriods = new ArrayList<>();
+        ArrayList<Period> reducedPeriods = new ArrayList<>();
+        normalPeriods.add(new Period(9, 17));
+        Period stay = new Period(9, 17);
+        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
+        BigDecimal actual = rate.calculate(stay);
+        BigDecimal expected = BigDecimal.valueOf(10);
+        Assertions.assertEquals(expected, actual);
+    }
+    @Test
     public void ManagementMust_Pay5_50Min() {
         CarParkKind kind = CarParkKind.MANAGEMENT;
         BigDecimal normalRate = new BigDecimal(2);
