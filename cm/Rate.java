@@ -12,7 +12,7 @@ public class Rate {
     private ArrayList<Period> normal = new ArrayList<>();
     private PricingStrategy reductionStrategy;
 
-    public Rate(PricingStrategy pricingStrategy, BigDecimal normalRate, BigDecimal reducedRate, ArrayList<Period> normalPeriods, ArrayList<Period> reducedPeriods) {
+    public Rate(CarParkKind kind, BigDecimal normalRate, BigDecimal reducedRate, ArrayList<Period> normalPeriods, ArrayList<Period> reducedPeriods) {
         if (reducedPeriods == null || normalPeriods == null) {
             throw new IllegalArgumentException("periods cannot be null");
         }
@@ -30,17 +30,16 @@ public class Rate {
         if (!isValidPeriods(reducedPeriods, normalPeriods)) {
             throw new IllegalArgumentException("The periods overlaps");
         }
-        this.reductionStrategy = pricingStrategy;
-//        if(kind == CarParkKind.STUDENT) {
-//            reductionStrategy = new StudentPricing();
-//        } else if(kind == CarParkKind.VISITOR) {
-//            reductionStrategy = new VisitorPricing();
-//        } else if(kind == CarParkKind.STAFF) {
-//            reductionStrategy = new StaffPricing();
-//        } else if(kind == CarParkKind.MANAGEMENT) {
-//            reductionStrategy = new ManagementPricing();
-//        }
-//        this.kind = kind;
+        if(kind == CarParkKind.STUDENT) {
+            this.reductionStrategy = new StudentPricing();
+        } else if(kind == CarParkKind.VISITOR) {
+            this.reductionStrategy = new VisitorPricing();
+        } else if(kind == CarParkKind.STAFF) {
+            this.reductionStrategy = new StaffPricing();
+        } else if(kind == CarParkKind.MANAGEMENT) {
+            this.reductionStrategy = new ManagementPricing();
+        }
+        this.kind = kind;
         this.hourlyNormalRate = normalRate;
         this.hourlyReducedRate = reducedRate;
         this.reduced = reducedPeriods;
