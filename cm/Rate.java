@@ -106,6 +106,8 @@ public class Rate {
                     this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
             if(rate.compareTo(new BigDecimal("5.50")) > 0) {
                 return rate = BigDecimal.valueOf(rate.intValue() * .33).setScale(2, RoundingMode.HALF_UP);
+            } else {
+                return rate;
             }
         }
         else if(this.kind == CarParkKind.MANAGEMENT) {
@@ -117,6 +119,8 @@ public class Rate {
                     this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
             return BigDecimal.valueOf(Math.min(rate.intValue(), 10));
         }
+
+        // Not being hit (all other avenues are consuming it)
         return (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).add(
                 this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
     }
