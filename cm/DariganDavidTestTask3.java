@@ -4,12 +4,30 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 // P is for Partition
 public class DariganDavidTestTask3 {
 
+    final int EQUAL_BIG_DECIMALS = 0;
+
     // Task 3
+    @Test
+    public void StudentRateOver5_50ReducedBy33Percent() {
+        CarParkKind kind = CarParkKind.STUDENT;
+        BigDecimal normalRate = new BigDecimal(6);
+        BigDecimal reducedRate = new BigDecimal(0);
+        ArrayList<Period> normalPeriods = new ArrayList<>();
+        ArrayList<Period> reducedPeriods = new ArrayList<>();
+        normalPeriods.add(new Period(7, 18));
+        Period stay = new Period(8, 15);
+        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
+        BigDecimal actual = rate.calculate(stay);
+        BigDecimal expected = BigDecimal.valueOf((7 * 6) * .33).setScale(2, RoundingMode.HALF_UP);
+        Assertions.assertEquals(expected, actual);
+    }
+
     // (Task 2 Bug: P1_NormalRateIsEqualOrGreaterThanZero)
     @Test public void TDD_NormalRateIsEqualOrGreaterThanZero() {
         CarParkKind kind = CarParkKind.STAFF;
