@@ -10,7 +10,7 @@ public class Rate {
     private BigDecimal hourlyReducedRate;
     private ArrayList<Period> reduced = new ArrayList<>();
     private ArrayList<Period> normal = new ArrayList<>();
-    private PricingStrategy reductionStrategy;
+    private PricingStrategy pricingStrategy;
 
     public Rate(PricingStrategy pricingStrategy, BigDecimal normalRate, BigDecimal reducedRate, ArrayList<Period> normalPeriods, ArrayList<Period> reducedPeriods) {
         if (reducedPeriods == null || normalPeriods == null) {
@@ -30,7 +30,7 @@ public class Rate {
         if (!isValidPeriods(reducedPeriods, normalPeriods)) {
             throw new IllegalArgumentException("The periods overlaps");
         }
-        this.reductionStrategy = pricingStrategy;
+        this.pricingStrategy = pricingStrategy;
         this.hourlyNormalRate = normalRate;
         this.hourlyReducedRate = reducedRate;
         this.reduced = reducedPeriods;
@@ -92,7 +92,7 @@ public class Rate {
         int reducedRateHours = periodStay.occurences(reduced);
         BigDecimal rate = (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).add(
                 this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
-        return reductionStrategy.modify(rate);
+        return pricingStrategy.modify(rate);
     }
 
 }
