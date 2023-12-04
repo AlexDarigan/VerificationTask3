@@ -98,6 +98,11 @@ public class Rate {
                 return rate = BigDecimal.valueOf(rate.intValue() * .33).setScale(2, RoundingMode.HALF_UP);
             }
         }
+        else if(this.kind == CarParkKind.MANAGEMENT) {
+            BigDecimal rate = (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).add(
+                    this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
+            return BigDecimal.valueOf(Math.max(rate.intValue(), 5.50));
+        }
         return (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).add(
                 this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
     }
