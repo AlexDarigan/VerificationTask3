@@ -11,6 +11,7 @@ public class Rate {
     private BigDecimal hourlyReducedRate;
     private ArrayList<Period> reduced = new ArrayList<>();
     private ArrayList<Period> normal = new ArrayList<>();
+    private ReductionStrategy reductionStrategy;
 
     public Rate(CarParkKind kind, BigDecimal normalRate, BigDecimal reducedRate, ArrayList<Period> normalPeriods, ArrayList<Period> reducedPeriods) {
         if (reducedPeriods == null || normalPeriods == null) {
@@ -29,6 +30,9 @@ public class Rate {
         }
         if (!isValidPeriods(reducedPeriods, normalPeriods)) {
             throw new IllegalArgumentException("The periods overlaps");
+        }
+        if(kind == CarParkKind.STUDENT) {
+            reductionStrategy = new StudentReduction();
         }
         this.kind = kind;
         this.hourlyNormalRate = normalRate;
@@ -104,11 +108,12 @@ public class Rate {
         else if(this.kind == CarParkKind.STUDENT) {
             BigDecimal rate = (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).add(
                     this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
-            if(rate.compareTo(new BigDecimal("5.50")) > 0) {
-                return rate = BigDecimal.valueOf(rate.intValue() * .33).setScale(2, RoundingMode.HALF_UP);
-            } else {
-                return rate;
-            }
+            return reductionStrategy.modify(rate);
+//            if(rate.compareTo(new BigDecimal("5.50")) > 0) {
+//                return rate = BigDecimal.valueOf(rate.intValue() * .33).setScale(2, RoundingMode.HALF_UP);
+//            } else {
+//                return rate;
+//            }
         }
         else if(this.kind == CarParkKind.MANAGEMENT) {
             BigDecimal rate = (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).add(
