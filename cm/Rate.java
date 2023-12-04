@@ -30,18 +30,7 @@ public class Rate {
         if (!isValidPeriods(reducedPeriods, normalPeriods)) {
             throw new IllegalArgumentException("The periods overlaps");
         }
-//        if(kind == CarParkKind.STUDENT) {
-//            this.reductionStrategy = new StudentPricing();
-//        } else if(kind == CarParkKind.VISITOR) {
-//            this.reductionStrategy = new VisitorPricing();
-//        } else if(kind == CarParkKind.STAFF) {
-//            this.reductionStrategy = new StaffPricing();
-//        } else if(kind == CarParkKind.MANAGEMENT) {
-//            this.reductionStrategy = new ManagementPricing();
-//        } else {
-//            throw new IllegalArgumentException("Invalid CarPark Kind");
-//        }
-//        this.kind = kind;
+        this.reductionStrategy = pricingStrategy;
         this.hourlyNormalRate = normalRate;
         this.hourlyReducedRate = reducedRate;
         this.reduced = reducedPeriods;
