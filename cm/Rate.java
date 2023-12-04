@@ -38,6 +38,8 @@ public class Rate {
             this.reductionStrategy = new StaffPricing();
         } else if(kind == CarParkKind.MANAGEMENT) {
             this.reductionStrategy = new ManagementPricing();
+        } else {
+            throw new IllegalArgumentException("Invalid CarPark Kind");
         }
         this.kind = kind;
         this.hourlyNormalRate = normalRate;

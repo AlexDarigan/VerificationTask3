@@ -11,9 +11,7 @@ import java.util.ArrayList;
 public class DariganDavidTestTask3 {
 
     final int EQUAL_BIG_DECIMALS = 0;
-//else {
-//        throw new IllegalArgumentException("Kind must be one of Student, Visitor, Staff or Managment");
-//    }
+
     @Test
     public void InvalidKindThrows() {
         BigDecimal normalRate = new BigDecimal(2);
