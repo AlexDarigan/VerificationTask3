@@ -13,6 +13,24 @@ public class DariganDavidTestTask3 {
     final int EQUAL_BIG_DECIMALS = 0;
 
     @Test
+    public void StudentReductionAppliesOverMixedPeriods() {
+        CarParkKind kind = CarParkKind.STUDENT;
+        BigDecimal normalRate = new BigDecimal(2);
+        BigDecimal reducedRate = new BigDecimal(1);
+        ArrayList<Period> normalPeriods = new ArrayList<>();
+        ArrayList<Period> reducedPeriods = new ArrayList<>();
+        normalPeriods.add(new Period(3, 6));
+        normalPeriods.add(new Period(7, 10));
+        reducedPeriods.add(new Period(0, 3));
+        Period periodStay = new Period(0, 6);
+
+        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
+        BigDecimal expected = BigDecimal.valueOf(9 * .33).setScale(2, RoundingMode.HALF_UP);
+        Assertions.assertEquals(expected, rate.calculate(periodStay));
+    }
+
+
+    @Test
     public void ManagementMustPay5_50MinEvenInReducedPeriods() {
         CarParkKind kind = CarParkKind.MANAGEMENT;
         BigDecimal normalRate = new BigDecimal(4);
@@ -449,22 +467,6 @@ public class DariganDavidTestTask3 {
         Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
         Assertions.assertEquals(new BigDecimal(3), rate.calculate(periodStay));
     }
-
-//    @Test
-//    public void P7_periodStayInNormalPeriodsANDReducedPeriods() {
-//        CarParkKind kind = CarParkKind.STUDENT;
-//        BigDecimal normalRate = new BigDecimal(2);
-//        BigDecimal reducedRate = new BigDecimal(1);
-//        ArrayList<Period> normalPeriods = new ArrayList<>();
-//        ArrayList<Period> reducedPeriods = new ArrayList<>();
-//        normalPeriods.add(new Period(3, 6));
-//        normalPeriods.add(new Period(7, 10));
-//        reducedPeriods.add(new Period(0, 3));
-//        Period periodStay = new Period(0, 6);
-//
-//        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
-//        Assertions.assertEquals(new BigDecimal(9), rate.calculate(periodStay));
-//    }
 
     @Test
     public void P8_periodStayNotInNormalPeriodsANDNotInReducedPeriods() {
