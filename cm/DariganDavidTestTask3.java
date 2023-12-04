@@ -15,7 +15,7 @@ public class DariganDavidTestTask3 {
     // Task 3
     @Test
     public void ManagementMust_Pay5_50Min() {
-        CarParkKind kind = CarParkKind.STUDENT;
+        CarParkKind kind = CarParkKind.MANAGEMENT;
         BigDecimal normalRate = new BigDecimal(2);
         BigDecimal reducedRate = new BigDecimal(1);
         ArrayList<Period> normalPeriods = new ArrayList<>();
