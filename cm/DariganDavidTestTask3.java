@@ -11,7 +11,21 @@ import java.util.ArrayList;
 public class DariganDavidTestTask3 {
 
     final int EQUAL_BIG_DECIMALS = 0;
-//    VISITOR: The first 10.00 is free, 50% reduction above that
+
+    @Test
+    public void HalfReductionForVisitorPast10() {
+        CarParkKind kind = CarParkKind.VISITOR;
+        BigDecimal normalRate = new BigDecimal(5);
+        BigDecimal reducedRate = new BigDecimal(2);
+        ArrayList<Period> normalPeriods = new ArrayList<>();
+        ArrayList<Period> reducedPeriods = new ArrayList<>();
+        normalPeriods.add(new Period(10, 18));
+        Period stay = new Period(10, 13);
+        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
+        BigDecimal actual = rate.calculate(stay);
+        BigDecimal expected = BigDecimal.valueOf(2.50);
+        Assertions.assertEquals(expected, actual);
+    }
     @Test
     public void VisitorFirst10IsFree() {
         CarParkKind kind = CarParkKind.VISITOR;
