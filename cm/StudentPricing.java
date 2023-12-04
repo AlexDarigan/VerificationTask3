@@ -3,7 +3,7 @@ package cm;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class StudentReduction extends ReductionStrategy {
+public class StudentPricing extends PricingStrategy {
     @Override
     BigDecimal modify(BigDecimal rate) {
         if(rate.compareTo(new BigDecimal("5.50")) > 0) {

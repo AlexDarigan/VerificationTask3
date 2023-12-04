@@ -12,6 +12,7 @@ public class DariganDavidTestTask3 {
 
     final int EQUAL_BIG_DECIMALS = 0;
 
+
     @Test
     public void StudentReductionAppliesOverMixedPeriods() {
         CarParkKind kind = CarParkKind.STUDENT;

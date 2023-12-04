@@ -1,7 +1,6 @@
 package cm;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +10,7 @@ public class Rate {
     private BigDecimal hourlyReducedRate;
     private ArrayList<Period> reduced = new ArrayList<>();
     private ArrayList<Period> normal = new ArrayList<>();
-    private ReductionStrategy reductionStrategy;
+    private PricingStrategy reductionStrategy;
 
     public Rate(CarParkKind kind, BigDecimal normalRate, BigDecimal reducedRate, ArrayList<Period> normalPeriods, ArrayList<Period> reducedPeriods) {
         if (reducedPeriods == null || normalPeriods == null) {
@@ -32,7 +31,7 @@ public class Rate {
             throw new IllegalArgumentException("The periods overlaps");
         }
         if(kind == CarParkKind.STUDENT) {
-            reductionStrategy = new StudentReduction();
+            reductionStrategy = new StudentPricing();
         }
         this.kind = kind;
         this.hourlyNormalRate = normalRate;
