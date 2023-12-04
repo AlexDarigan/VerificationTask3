@@ -34,6 +34,8 @@ public class Rate {
             reductionStrategy = new StudentPricing();
         } else if(kind == CarParkKind.VISITOR) {
             reductionStrategy = new VisitorPricing();
+        } else if(kind == CarParkKind.STAFF) {
+            reductionStrategy = new StaffPricing();
         }
         this.kind = kind;
         this.hourlyNormalRate = normalRate;
@@ -124,7 +126,7 @@ public class Rate {
         } else if(this.kind == CarParkKind.STAFF) {
             BigDecimal rate = (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).add(
                     this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
-            return BigDecimal.valueOf(Math.min(rate.intValue(), 10));
+            return reductionStrategy.modify(rate);
         }
 
         // Not being hit (all other avenues are consuming it)
