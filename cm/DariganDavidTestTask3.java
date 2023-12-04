@@ -12,6 +12,23 @@ public class DariganDavidTestTask3 {
 
     final int EQUAL_BIG_DECIMALS = 0;
 
+
+    @Test
+    public void ManagementMustPay5_50MinEvenInReducedPeriods() {
+        CarParkKind kind = CarParkKind.MANAGEMENT;
+        BigDecimal normalRate = new BigDecimal(4);
+        BigDecimal reducedRate = new BigDecimal(2);
+        ArrayList<Period> normalPeriods = new ArrayList<>();
+        ArrayList<Period> reducedPeriods = new ArrayList<>();
+        normalPeriods.add(new Period(5, 6));
+        normalPeriods.add(new Period(7, 9));
+        reducedPeriods.add(new Period(0, 3));
+        Period periodStay = new Period(0, 2);
+
+        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
+        Assertions.assertEquals(BigDecimal.valueOf(5.50), rate.calculate(periodStay));
+    }
+
     @Test
     public void HalfReductionForVisitorPast10() {
         CarParkKind kind = CarParkKind.VISITOR;
@@ -433,22 +450,6 @@ public class DariganDavidTestTask3 {
 
         Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
         Assertions.assertEquals(new BigDecimal(2), rate.calculate(periodStay));
-    }
-
-    @Test
-    public void P5_periodStayInReducedPeriods() {
-        CarParkKind kind = CarParkKind.MANAGEMENT;
-        BigDecimal normalRate = new BigDecimal(4);
-        BigDecimal reducedRate = new BigDecimal(2);
-        ArrayList<Period> normalPeriods = new ArrayList<>();
-        ArrayList<Period> reducedPeriods = new ArrayList<>();
-        normalPeriods.add(new Period(5, 6));
-        normalPeriods.add(new Period(7, 9));
-        reducedPeriods.add(new Period(0, 3));
-        Period periodStay = new Period(0, 2);
-
-        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
-        Assertions.assertEquals(new BigDecimal(4), rate.calculate(periodStay));
     }
 
     @Test
