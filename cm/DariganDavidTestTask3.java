@@ -34,7 +34,7 @@ public class DariganDavidTestTask3 {
         ArrayList<Period> normalPeriods = new ArrayList<>();
         ArrayList<Period> reducedPeriods = new ArrayList<>();
         normalPeriods.add(new Period(10, 18));
-        Period stay = new Period(10, 13);
+        Period stay = new Period(10, 12);
         Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
         BigDecimal actual = rate.calculate(stay);
         BigDecimal expected = BigDecimal.valueOf(0);
