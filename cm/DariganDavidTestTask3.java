@@ -12,7 +12,6 @@ public class DariganDavidTestTask3 {
 
     final int EQUAL_BIG_DECIMALS = 0;
 
-
     @Test
     public void ManagementMustPay5_50MinEvenInReducedPeriods() {
         CarParkKind kind = CarParkKind.MANAGEMENT;
@@ -418,23 +417,6 @@ public class DariganDavidTestTask3 {
         Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
         Assertions.assertEquals(new BigDecimal(2), rate.calculate(periodStay));
     }
-
-    // FAILED: ?
-//    @Test
-//    public void P3_periodStayInNormalPeriods() {
-//        CarParkKind kind = CarParkKind.STUDENT;
-//        BigDecimal normalRate = new BigDecimal(5);
-//        BigDecimal reducedRate = new BigDecimal(1);
-//        ArrayList<Period> normalPeriods = new ArrayList<>();
-//        ArrayList<Period> reducedPeriods = new ArrayList<>();
-//        normalPeriods.add(new Period(5, 6));
-//        normalPeriods.add(new Period(10, 11));
-//        reducedPeriods.add(new Period(0, 5)); // The extra 1 is coming from this
-//        Period periodStay = new Period(4, 6);
-//
-//        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
-//        Assertions.assertEquals(new BigDecimal(6), rate.calculate(periodStay));
-//    }
 
     @Test
     public void P4_periodStayInReducedPeriods() {
