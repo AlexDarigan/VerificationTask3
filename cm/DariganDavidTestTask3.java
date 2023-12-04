@@ -28,7 +28,7 @@ public class DariganDavidTestTask3 {
     }
     @Test
     public void StudentReductionAppliesOverMixedPeriods() {
-        CarParkKind kind = CarParkKind.STUDENT;
+        PricingStrategy pricing = new StudentPricing();
         BigDecimal normalRate = new BigDecimal(2);
         BigDecimal reducedRate = new BigDecimal(1);
         ArrayList<Period> normalPeriods = new ArrayList<>();
@@ -38,7 +38,7 @@ public class DariganDavidTestTask3 {
         reducedPeriods.add(new Period(0, 3));
         Period periodStay = new Period(0, 6);
 
-        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
+        Rate rate = new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods);
         BigDecimal expected = BigDecimal.valueOf(9 * .33).setScale(2, RoundingMode.HALF_UP);
         Assertions.assertEquals(expected, rate.calculate(periodStay));
     }
@@ -46,7 +46,7 @@ public class DariganDavidTestTask3 {
 
     @Test
     public void ManagementMustPay5_50MinEvenInReducedPeriods() {
-        CarParkKind kind = CarParkKind.MANAGEMENT;
+        PricingStrategy pricing = new ManagementPricing();
         BigDecimal normalRate = new BigDecimal(4);
         BigDecimal reducedRate = new BigDecimal(2);
         ArrayList<Period> normalPeriods = new ArrayList<>();
@@ -56,34 +56,34 @@ public class DariganDavidTestTask3 {
         reducedPeriods.add(new Period(0, 3));
         Period periodStay = new Period(0, 2);
 
-        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
+        Rate rate = new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods);
         Assertions.assertEquals(BigDecimal.valueOf(5.50), rate.calculate(periodStay));
     }
 
     @Test
     public void HalfReductionForVisitorPast10() {
-        CarParkKind kind = CarParkKind.VISITOR;
+        PricingStrategy pricing = new VisitorPricing();
         BigDecimal normalRate = new BigDecimal(5);
         BigDecimal reducedRate = new BigDecimal(2);
         ArrayList<Period> normalPeriods = new ArrayList<>();
         ArrayList<Period> reducedPeriods = new ArrayList<>();
         normalPeriods.add(new Period(10, 18));
         Period stay = new Period(10, 13);
-        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
+        Rate rate = new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods);
         BigDecimal actual = rate.calculate(stay);
         BigDecimal expected = BigDecimal.valueOf(2.50);
         Assertions.assertEquals(expected, actual);
     }
     @Test
     public void VisitorFirst10IsFree() {
-        CarParkKind kind = CarParkKind.VISITOR;
+        PricingStrategy pricing = new VisitorPricing();
         BigDecimal normalRate = new BigDecimal(5);
         BigDecimal reducedRate = new BigDecimal(2);
         ArrayList<Period> normalPeriods = new ArrayList<>();
         ArrayList<Period> reducedPeriods = new ArrayList<>();
         normalPeriods.add(new Period(10, 18));
         Period stay = new Period(10, 12);
-        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
+        Rate rate = new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods);
         BigDecimal actual = rate.calculate(stay);
         BigDecimal expected = BigDecimal.valueOf(0);
         Assertions.assertEquals(expected, actual);
@@ -92,42 +92,42 @@ public class DariganDavidTestTask3 {
     // Task 3
     @Test
     public void StaffPayNoMoreThan10PerDay() {
-        CarParkKind kind = CarParkKind.STAFF;
+        PricingStrategy pricing = new StaffPricing();
         BigDecimal normalRate = new BigDecimal(5);
         BigDecimal reducedRate = new BigDecimal(4);
         ArrayList<Period> normalPeriods = new ArrayList<>();
         ArrayList<Period> reducedPeriods = new ArrayList<>();
         normalPeriods.add(new Period(9, 17));
         Period stay = new Period(9, 17);
-        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
+        Rate rate = new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods);
         BigDecimal actual = rate.calculate(stay);
         BigDecimal expected = BigDecimal.valueOf(10);
         Assertions.assertEquals(expected, actual);
     }
     @Test
     public void ManagementMust_Pay5_50Min() {
-        CarParkKind kind = CarParkKind.MANAGEMENT;
+        PricingStrategy pricing = new ManagementPricing();
         BigDecimal normalRate = new BigDecimal(2);
         BigDecimal reducedRate = new BigDecimal(1);
         ArrayList<Period> normalPeriods = new ArrayList<>();
         ArrayList<Period> reducedPeriods = new ArrayList<>();
         normalPeriods.add(new Period(9, 17));
         Period stay = new Period(10, 11);
-        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
+        Rate rate = new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods);
         BigDecimal actual = rate.calculate(stay);
         BigDecimal expected = BigDecimal.valueOf(5.50);
         Assertions.assertEquals(expected, actual);
     }
     @Test
     public void StudentRateOver5_50ReducedBy33Percent() {
-        CarParkKind kind = CarParkKind.STUDENT;
+        PricingStrategy pricing = new StudentPricing();
         BigDecimal normalRate = new BigDecimal(6);
         BigDecimal reducedRate = new BigDecimal(0);
         ArrayList<Period> normalPeriods = new ArrayList<>();
         ArrayList<Period> reducedPeriods = new ArrayList<>();
         normalPeriods.add(new Period(7, 18));
         Period stay = new Period(8, 15);
-        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
+        Rate rate = new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods);
         BigDecimal actual = rate.calculate(stay);
         BigDecimal expected = BigDecimal.valueOf((7 * 6) * .33).setScale(2, RoundingMode.HALF_UP);
         Assertions.assertEquals(expected, actual);
@@ -135,11 +135,11 @@ public class DariganDavidTestTask3 {
 
     // (Task 2 Bug: P1_NormalRateIsEqualOrGreaterThanZero)
     @Test public void TDD_NormalRateIsEqualOrGreaterThanZero() {
-        CarParkKind kind = CarParkKind.STAFF;
+        PricingStrategy pricing = new StaffPricing();
         BigDecimal normalRate = BigDecimal.ZERO;
         BigDecimal reducedRate = BigDecimal.ZERO;
 
-        Rate rate = new Rate(kind, normalRate, reducedRate, new ArrayList<>(), new ArrayList<>());
+        Rate rate = new Rate(pricing, normalRate, reducedRate, new ArrayList<>(), new ArrayList<>());
         Assertions.assertInstanceOf(Rate.class, rate);
     }
 
@@ -159,51 +159,51 @@ public class DariganDavidTestTask3 {
 
     @Test
     public void TC1_ReducedPeriodsAreNull() {
-        CarParkKind kind = CarParkKind.STAFF;
+        PricingStrategy pricing = new StaffPricing();
         BigDecimal normalRate = BigDecimal.valueOf(2);
         BigDecimal reducedRate = BigDecimal.valueOf(1);
         ArrayList<Period> normalPeriods = new ArrayList<>();
         ArrayList<Period> reducedPeriods = null;
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods));
     }
 
     @Test
     public void TC2_ReducedPeriodsAreNullOrNormalPeriodsAreNull() {
-        CarParkKind kind = CarParkKind.STAFF;
+        PricingStrategy pricing = new StaffPricing();
         BigDecimal normalRate = BigDecimal.valueOf(2);
         BigDecimal reducedRate = BigDecimal.valueOf(1);
         ArrayList<Period> normalPeriods = null;
         ArrayList<Period> reducedPeriods = new ArrayList<>();
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods));
     }
 
     @Test
     public void TC3_NormalRateIsNull() {
-        CarParkKind kind = CarParkKind.STUDENT;
+        PricingStrategy pricing = new StudentPricing();
         BigDecimal normalRate = null;
         BigDecimal reducedRate = BigDecimal.ZERO;
         ArrayList<Period> normalPeriods = new ArrayList<>();
         ArrayList<Period> reducedPeriods = new ArrayList<>();
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods));
     }
 
     @Test
     public void TC4_NormalRateIsNullORReducedRateIsNull() {
-        CarParkKind kind = CarParkKind.STUDENT;
+        PricingStrategy pricing = new StudentPricing();
         BigDecimal normalRate = BigDecimal.valueOf(3);
         BigDecimal reducedRate = null;
         ArrayList<Period> normalPeriods = new ArrayList<>();
         ArrayList<Period> reducedPeriods = new ArrayList<>();
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods));
     }
 
     @Test
     public void TC5_ReducedPeriodsAreInvalid() {
-        CarParkKind kind = CarParkKind.VISITOR;
+        PricingStrategy pricing = new VisitorPricing();
         BigDecimal normalRate = BigDecimal.valueOf(2);
         BigDecimal reducedRate = BigDecimal.valueOf(1);
         ArrayList<Period> normalPeriods = new ArrayList<>();
@@ -212,13 +212,13 @@ public class DariganDavidTestTask3 {
         reducedPeriods.add(new Period(2, 3));
         reducedPeriods.add(new Period(4, 10));
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods));
     }
 
     @Test
     public void TC6_ILessThanPeriodSizeAndIsValid_False() {
 
-        CarParkKind kind = CarParkKind.VISITOR;
+        PricingStrategy pricing = new VisitorPricing();
         BigDecimal normalRate = BigDecimal.valueOf(5);
         BigDecimal reducedRate = BigDecimal.valueOf(2);
         ArrayList<Period> normalPeriods = new ArrayList<>();
@@ -230,14 +230,14 @@ public class DariganDavidTestTask3 {
         reducedPeriods.add(new Period(4, 5));
         reducedPeriods.add(new Period(9, 10));
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods));
 
     }
 
     // Task 1 - Black Box
     @Test
     public void P1_NormalRateIsEqualOrGreaterThanZero() {
-        CarParkKind kind = CarParkKind.STAFF;
+        PricingStrategy pricing = new StaffPricing();
         BigDecimal normalRate = BigDecimal.ZERO;
         BigDecimal reducedRate = BigDecimal.ZERO;
         ArrayList<Period> normalPeriods = new ArrayList<>();
@@ -246,14 +246,14 @@ public class DariganDavidTestTask3 {
         normalPeriods.add(new Period(10, 11));
         reducedPeriods.add(new Period(0, 3));
 
-        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
+        Rate rate = new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods);
         Assertions.assertInstanceOf(Rate.class, rate);
 
     }
 
     @Test
     public void P2_NormalRateIsEqualOrGreaterThanZero() {
-        CarParkKind kind = CarParkKind.STUDENT;
+        PricingStrategy pricing = new StudentPricing();
         BigDecimal normalRate = new BigDecimal(-1);
         BigDecimal reducedRate = BigDecimal.ZERO;
         ArrayList<Period> normalPeriods = new ArrayList<>();
@@ -262,14 +262,14 @@ public class DariganDavidTestTask3 {
         normalPeriods.add(new Period(9, 12));
         reducedPeriods.add(new Period(0, 2));
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods));
 
 
     }
 
     @Test
     public void P3_NormalRateIsEqualOrGreaterThanZero() {
-        CarParkKind kind = CarParkKind.MANAGEMENT;
+        PricingStrategy pricing = new ManagementPricing();
         BigDecimal normalRate = new BigDecimal(1);
         BigDecimal reducedRate = BigDecimal.ZERO;
         ArrayList<Period> normalPeriods = new ArrayList<>();
@@ -278,13 +278,13 @@ public class DariganDavidTestTask3 {
         normalPeriods.add(new Period(8, 10));
         reducedPeriods.add(new Period(0, 1));
 
-        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
+        Rate rate = new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods);
         Assertions.assertInstanceOf(Rate.class, rate);
     }
 
     @Test
     public void P4_NormalRateIsEqualOrGreaterThanZero() {
-        CarParkKind kind = CarParkKind.VISITOR;
+        PricingStrategy pricing = new VisitorPricing();
         BigDecimal normalRate = new BigDecimal(25);
         BigDecimal reducedRate = BigDecimal.ZERO;
         ArrayList<Period> normalPeriods = new ArrayList<>();
@@ -293,14 +293,14 @@ public class DariganDavidTestTask3 {
         normalPeriods.add(new Period(7, 10));
         reducedPeriods.add(new Period(2, 3));
 
-        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
+        Rate rate = new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods);
         Assertions.assertInstanceOf(Rate.class, rate);
 
     }
 
     @Test
     public void P5_ReducedRateIsEqualOrGreaterThanZero() {
-        CarParkKind kind = CarParkKind.STUDENT;
+        PricingStrategy pricing = new StudentPricing();
         BigDecimal normalRate = new BigDecimal(5);
         BigDecimal reducedRate = new BigDecimal(-1);
         ArrayList<Period> normalPeriods = new ArrayList<>();
@@ -309,13 +309,13 @@ public class DariganDavidTestTask3 {
         normalPeriods.add(new Period(7, 11));
         reducedPeriods.add(new Period(0, 5));
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods));
 
     }
 
     @Test
     public void P6_ReducedRateIsEqualOrGreaterThanZero() {
-        CarParkKind kind = CarParkKind.VISITOR;
+        PricingStrategy pricing = new VisitorPricing();
         BigDecimal normalRate = new BigDecimal(3);
         BigDecimal reducedRate = new BigDecimal(1);
         ArrayList<Period> normalPeriods = new ArrayList<>();
@@ -324,14 +324,14 @@ public class DariganDavidTestTask3 {
         normalPeriods.add(new Period(10, 11));
         reducedPeriods.add(new Period(0, 5));
 
-        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
+        Rate rate = new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods);
         Assertions.assertInstanceOf(Rate.class, rate);
 
     }
 
     @Test
     public void P7_ReducedRateIsEqualOrGreaterThanZero() {
-        CarParkKind kind = CarParkKind.STAFF;
+        PricingStrategy pricing = new StaffPricing();
         BigDecimal normalRate = new BigDecimal(45);
         BigDecimal reducedRate = new BigDecimal(30);
         ArrayList<Period> normalPeriods = new ArrayList<>();
@@ -340,13 +340,13 @@ public class DariganDavidTestTask3 {
         normalPeriods.add(new Period(10, 11));
         reducedPeriods.add(new Period(0, 5));
 
-        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
+        Rate rate = new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods);
         Assertions.assertInstanceOf(Rate.class, rate);
     }
 
     @Test
     public void P8_ReducedRateIsEqualOrLessThanNormalRate() {
-        CarParkKind kind = CarParkKind.VISITOR;
+        PricingStrategy pricing = new VisitorPricing();
         BigDecimal normalRate = new BigDecimal(0);
         BigDecimal reducedRate = new BigDecimal(2);
         ArrayList<Period> normalPeriods = new ArrayList<>();
@@ -355,12 +355,12 @@ public class DariganDavidTestTask3 {
         normalPeriods.add(new Period(10, 11));
         reducedPeriods.add(new Period(0, 5));
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods));
     }
 
     @Test
     public void P9_ReducedRateIsEqualOrGreaterThanZero() {
-        CarParkKind kind = CarParkKind.STAFF;
+        PricingStrategy pricing = new StaffPricing();
         BigDecimal normalRate = new BigDecimal(4);
         BigDecimal reducedRate = new BigDecimal(2);
         ArrayList<Period> normalPeriods = new ArrayList<>();
@@ -369,13 +369,13 @@ public class DariganDavidTestTask3 {
         normalPeriods.add(new Period(10, 11));
         reducedPeriods.add(new Period(0, 5));
 
-        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
+        Rate rate = new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods);
         Assertions.assertInstanceOf(Rate.class, rate);
     }
 
     @Test
     public void P10_PeriodsCannotOverlap() {
-        CarParkKind kind = CarParkKind.STAFF;
+        PricingStrategy pricing = new StaffPricing();
         BigDecimal normalRate = new BigDecimal(5);
         BigDecimal reducedRate = new BigDecimal(1);
         ArrayList<Period> normalPeriods = new ArrayList<>();
@@ -384,13 +384,13 @@ public class DariganDavidTestTask3 {
         normalPeriods.add(new Period(4, 7));
         reducedPeriods.add(new Period(0, 5));
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods));
     }
 
     // Periods seem to be able to overlap if in different Arrays
     @Test
     public void P11_PeriodsCannotOverlap() {
-        CarParkKind kind = CarParkKind.VISITOR;
+        PricingStrategy pricing = new VisitorPricing();
         BigDecimal normalRate = new BigDecimal(3);
         BigDecimal reducedRate = new BigDecimal(2);
         ArrayList<Period> normalPeriods = new ArrayList<>();
@@ -399,12 +399,12 @@ public class DariganDavidTestTask3 {
         normalPeriods.add(new Period(7, 9));
         reducedPeriods.add(new Period(4, 6));
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods));
     }
 
     @Test
     public void P12_PeriodsCannotOverlap() {
-        CarParkKind kind = CarParkKind.STAFF;
+        PricingStrategy pricing = new StaffPricing();
         BigDecimal normalRate = new BigDecimal(15);
         BigDecimal reducedRate = new BigDecimal(10);
         ArrayList<Period> normalPeriods = new ArrayList<>();
@@ -413,14 +413,14 @@ public class DariganDavidTestTask3 {
         normalPeriods.add(new Period(7, 9));
         reducedPeriods.add(new Period(5, 6));
 
-        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
+        Rate rate = new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods);
         Assertions.assertInstanceOf(Rate.class, rate);
     }
 
     // Rate Calculate Tests
     @Test
     public void P1_periodStayInNormalPeriods() {
-        CarParkKind kind = CarParkKind.STAFF;
+        PricingStrategy pricing = new StaffPricing();
         BigDecimal normalRate = new BigDecimal(4);
         BigDecimal reducedRate = new BigDecimal(2);
         ArrayList<Period> normalPeriods = new ArrayList<>();
@@ -430,13 +430,13 @@ public class DariganDavidTestTask3 {
         reducedPeriods.add(new Period(0, 5));
         Period periodStay = new Period(5, 6);
 
-        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
+        Rate rate = new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods);
         Assertions.assertEquals(new BigDecimal(4), rate.calculate(periodStay));
     }
 
     @Test
     public void P2_periodStayInNormalPeriods() {
-        CarParkKind kind = CarParkKind.STAFF;
+        PricingStrategy pricing = new StaffPricing();
         BigDecimal normalRate = new BigDecimal(2);
         BigDecimal reducedRate = new BigDecimal(1);
         ArrayList<Period> normalPeriods = new ArrayList<>();
@@ -446,13 +446,13 @@ public class DariganDavidTestTask3 {
         reducedPeriods.add(new Period(0, 5));
         Period periodStay = new Period(5, 7);
 
-        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
+        Rate rate = new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods);
         Assertions.assertEquals(new BigDecimal(2), rate.calculate(periodStay));
     }
 
     @Test
     public void P4_periodStayInReducedPeriods() {
-        CarParkKind kind = CarParkKind.STAFF;
+        PricingStrategy pricing = new StaffPricing();
         BigDecimal normalRate = new BigDecimal(2);
         BigDecimal reducedRate = new BigDecimal(1);
         ArrayList<Period> normalPeriods = new ArrayList<>();
@@ -462,13 +462,13 @@ public class DariganDavidTestTask3 {
         reducedPeriods.add(new Period(0, 3));
         Period periodStay = new Period(1, 3);
 
-        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
+        Rate rate = new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods);
         Assertions.assertEquals(new BigDecimal(2), rate.calculate(periodStay));
     }
 
     @Test
     public void P6_periodStayInReducedPeriods() {
-        CarParkKind kind = CarParkKind.STUDENT;
+        PricingStrategy pricing = new StudentPricing();
         BigDecimal normalRate = new BigDecimal(2);
         BigDecimal reducedRate = new BigDecimal(1);
         ArrayList<Period> normalPeriods = new ArrayList<>();
@@ -478,13 +478,13 @@ public class DariganDavidTestTask3 {
         reducedPeriods.add(new Period(0, 3));
         Period periodStay = new Period(0, 3);
 
-        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
+        Rate rate = new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods);
         Assertions.assertEquals(new BigDecimal(3), rate.calculate(periodStay));
     }
 
     @Test
     public void P8_periodStayNotInNormalPeriodsANDNotInReducedPeriods() {
-        CarParkKind kind = CarParkKind.VISITOR;
+        PricingStrategy pricing = new VisitorPricing();
         BigDecimal normalRate = new BigDecimal(2);
         BigDecimal reducedRate = new BigDecimal(1);
         ArrayList<Period> normalPeriods = new ArrayList<>();
@@ -494,7 +494,7 @@ public class DariganDavidTestTask3 {
         reducedPeriods.add(new Period(0, 3));
         Period periodStay = new Period(10, 20);
 
-        Rate rate = new Rate(kind, normalRate, reducedRate, normalPeriods, reducedPeriods);
+        Rate rate = new Rate(pricing, normalRate, reducedRate, normalPeriods, reducedPeriods);
         Assertions.assertEquals(new BigDecimal(0), rate.calculate(periodStay));
     }
 
