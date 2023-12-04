@@ -101,21 +101,7 @@ public class Rate {
         int reducedRateHours = periodStay.occurences(reduced);
         BigDecimal rate = (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).add(
                 this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
-        if (this.kind==CarParkKind.VISITOR) {
-            return reductionStrategy.modify(rate);
-        }
-        else if(this.kind == CarParkKind.STUDENT) {
-            return reductionStrategy.modify(rate);
-        }
-        else if(this.kind == CarParkKind.MANAGEMENT) {
-            return reductionStrategy.modify(rate);
-        } else if(this.kind == CarParkKind.STAFF) {
-            return reductionStrategy.modify(rate);
-        }
-
-        // Not being hit (all other avenues are consuming it)
-        return (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).add(
-                this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
+        return reductionStrategy.modify(rate);
     }
 
 }
