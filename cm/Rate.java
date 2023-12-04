@@ -36,6 +36,8 @@ public class Rate {
             reductionStrategy = new VisitorPricing();
         } else if(kind == CarParkKind.STAFF) {
             reductionStrategy = new StaffPricing();
+        } else if(kind == CarParkKind.MANAGEMENT) {
+            reductionStrategy = new ManagementPricing();
         }
         this.kind = kind;
         this.hourlyNormalRate = normalRate;
@@ -122,7 +124,8 @@ public class Rate {
         else if(this.kind == CarParkKind.MANAGEMENT) {
             BigDecimal rate = (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).add(
                     this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
-            return BigDecimal.valueOf(Math.max(rate.intValue(), 5.50));
+//            return BigDecimal.valueOf(Math.max(rate.intValue(), 5.50));
+            return reductionStrategy.modify(rate);
         } else if(this.kind == CarParkKind.STAFF) {
             BigDecimal rate = (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).add(
                     this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
